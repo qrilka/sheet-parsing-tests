@@ -11,26 +11,38 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
 
+library
+  ghc-options: -Wall
+  hs-source-dirs: src
+  build-depends: base
+               , bytestring
+               , conduit
+               , exceptions
+               , hexpat
+               , safe
+               , text
+               , xml-conduit
+  exposed-modules: XMLParsers
+  other-modules: XMLParsers.Common
+                 XMLParsers.Types
+                 XMLParsers.XmlConduit.Common
+                 XMLParsers.XmlConduit.Cursor
+                 XMLParsers.XmlConduit.Stream
+                 XMLParsers.Hexpat.Tree
+                 XMLParsers.Hexpat.SAX
+  default-language: Haskell2010
+
 benchmark bench
   type: exitcode-stdio-1.0
+  ghc-options: -Wall
   hs-source-dirs: benchmarks
   main-is: Main.hs
   build-depends: base
                , bytestring
-               , conduit
                , criterion
-               , deepseq
-               , exceptions
-               , extra
-               , hexpat
-               , mtl
-               , resourcet
-               , safe
-               , text
-               , xml-conduit
-               , xml-types
+               , sheet-parsing-tests
 
-  default-language:    Haskell2010
+  default-language: Haskell2010
 
 source-repository head
   type:     git
