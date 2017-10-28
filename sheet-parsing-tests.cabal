@@ -19,17 +19,19 @@ library
                , conduit
                , exceptions
                , hexpat
+               , hexml
                , safe
                , text
                , xml-conduit
   exposed-modules: XMLParsers
   other-modules: XMLParsers.Common
+                 XMLParsers.Hexml
+                 XMLParsers.Hexpat.SAX
+                 XMLParsers.Hexpat.Tree
                  XMLParsers.Types
                  XMLParsers.XmlConduit.Common
                  XMLParsers.XmlConduit.Cursor
                  XMLParsers.XmlConduit.Stream
-                 XMLParsers.Hexpat.Tree
-                 XMLParsers.Hexpat.SAX
   default-language: Haskell2010
 
 benchmark bench
@@ -41,7 +43,6 @@ benchmark bench
                , bytestring
                , criterion
                , sheet-parsing-tests
-
   default-language: Haskell2010
 
 test-suite weigh
@@ -53,6 +54,7 @@ test-suite weigh
                , bytestring
                , sheet-parsing-tests
                , weigh
+  default-language: Haskell2010
 
 source-repository head
   type:     git

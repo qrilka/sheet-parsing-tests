@@ -1,11 +1,13 @@
 module XMLParsers
   ( parseCellsCursor
-  , parseCellsStream
-  , parseCellsExpatT
   , parseCellsExpatS
+  , parseCellsExpatT
+  , parseCellsHexml
+  , parseCellsStream
   ) where
 
-import XMLParsers.XmlConduit.Cursor
-import XMLParsers.XmlConduit.Stream
+import XMLParsers.Hexml
 import XMLParsers.Hexpat.SAX
 import XMLParsers.Hexpat.Tree
+import XMLParsers.XmlConduit.Cursor
+import XMLParsers.XmlConduit.Stream

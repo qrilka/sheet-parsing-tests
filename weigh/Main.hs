@@ -14,6 +14,7 @@ main = do
       fromEx (Right a) = a
   mainWith $ do
     func "with xml-conduit/stream" (fromEx . parseCellsStream) sheetBs
-    func "with xml-conduit/cursor" parseCellsCursor sheetBs           
-    func "with hexpat/tree" parseCellsExpatT sheetBs                  
-    func "with hexpat/SAX" parseCellsExpatS sheetBs                   
+    func "with xml-conduit/cursor" parseCellsCursor sheetBs
+    func "with hexpat/tree" parseCellsExpatT sheetBs
+    func "with hexpat/SAX" parseCellsExpatS sheetBs
+    func "with hexml" parseCellsHexml (LB.toStrict sheetBs)

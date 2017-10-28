@@ -26,5 +26,7 @@ main = do
           nf parseCellsExpatT sheetBs
         , bench "with hexpat/SAX" $
           nf parseCellsExpatS sheetBs
+        , bench "with hexml" $
+          nf parseCellsHexml (LB.toStrict sheetBs)
         ]
     ]
