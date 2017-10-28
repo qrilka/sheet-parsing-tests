@@ -44,6 +44,16 @@ benchmark bench
 
   default-language: Haskell2010
 
+test-suite weigh
+  type: exitcode-stdio-1.0
+  ghc-options: -Wall
+  hs-source-dirs: weigh
+  main-is: Main.hs
+  build-depends: base
+               , bytestring
+               , sheet-parsing-tests
+               , weigh
+
 source-repository head
   type:     git
   location: https://github.com/githubuser/sheet-parsing-tests
