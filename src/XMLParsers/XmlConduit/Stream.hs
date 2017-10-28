@@ -1,9 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TypeApplications #-}
 module XMLParsers.XmlConduit.Stream
   ( parseCellsStream
   ) where
 
+import Control.Monad (void)
 import Control.Monad.Catch (MonadThrow)
 import qualified Data.ByteString.Lazy as LB
 import Data.Conduit
@@ -24,20 +24,20 @@ parseCellsStream bs =
   CL.sourceList (LB.toChunks bs) =$= parseBytes def $$ SP.force "cells required" parseCells
   where
     parseCells = tagIgnoreAttrs (n_ "worksheet") $ do
-      ignoreTreeName (n_ "sheetPr")
-      ignoreTreeName (n_ "dimension")
-      ignoreTreeName (n_ "sheetViews")
-      ignoreTreeName (n_ "sheetFormatPr")
-      ignoreTreeName (n_ "cols")
+      void $ ignoreTreeName (n_ "sheetPr")
+      void $ ignoreTreeName (n_ "dimension")
+      void $ ignoreTreeName (n_ "sheetViews")
+      void $ ignoreTreeName (n_ "sheetFormatPr")
+      void $ ignoreTreeName (n_ "cols")
       rows <- tagIgnoreAttrs (n_ "sheetData") $ many parseRow
-      ignoreTreeName (n_ "printOptions")
-      ignoreTreeName (n_ "pageMargins")
-      ignoreTreeName (n_ "pageSetup")
-      ignoreTreeName (n_ "headerFooter")
-      ignoreTreeName (n_ "drawing")
+      void $ ignoreTreeName (n_ "printOptions")
+      void $ ignoreTreeName (n_ "pageMargins")
+      void $ ignoreTreeName (n_ "pageSetup")
+      void $ ignoreTreeName (n_ "headerFooter")
+      void $ ignoreTreeName (n_ "drawing")
       return rows
-    parseRow = tagName (n_ "row") (requireAttr "r" <* ignoreAttrs) $ \rR -> do
+    parseRow = tagIgnoreAttrs (n_ "row") $
       many $ tagName (n_ "c") ((,,) <$> requireAttr "r" <*> attr "s" <*> attr "t") $ \(rC, s, t) -> do
         f <- tagIgnoreAttrs (n_ "f") SP.content
         v <- tagNoAttr (n_ "v") SP.content
-        return (parseSingleCellRefNoting $ rC, (readMay {-@ Int-}) =<< fmap T.unpack s, fromMaybe "n" t, v, f)
+        return (parseSingleCellRefNoting rC, readMay =<< fmap T.unpack s, fromMaybe "n" t, v, f)

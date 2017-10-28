@@ -39,5 +39,5 @@ parseCellsExpatT bs = parseCells $ parseThrowing defaultParseOptions bs
           f = case afterV of
             (e:rest) | eName e == "v" -> Just (getText e)
             _ -> Nothing
-      return (parseSingleCellRefNoting $ ref, (readMay {-@ Int-}) =<< fmap T.unpack s, t, Nothing, f)
+      return (parseSingleCellRefNoting ref, readMay =<< fmap T.unpack s, t, Nothing, f)
 

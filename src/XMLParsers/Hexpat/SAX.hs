@@ -21,10 +21,10 @@ parseCellsExpatS bs = parseCells $ ES.parse ES.defaultParseOptions bs
     parseCells evs =
       parseRows . (\(_,inner,_) -> inner) . fromJustNote "missing sheetData" $ takeTag "sheetData" evs
     takeTag nm evs =
-      let (upToEnd, rest) = span (not . isEndTag nm) $
+      let (upToEnd, rest) = break (isEndTag nm) $
             dropWhile (not . isStartTag nm) evs
       in case upToEnd of
-        (ES.StartElement tag' attrs):inner -> Just (attrs, inner, rest)
+        ES.StartElement _tag attrs : inner -> Just (attrs, inner, rest)
         _ -> Nothing
     parseRows :: [ES.SAXEvent Text Text]
               -> [((Int, Int), Maybe Int, Text, Maybe Text, Maybe Text)]
@@ -51,10 +51,10 @@ parseCellsExpatS bs = parseCells $ ES.parse ES.defaultParseOptions bs
           (v, afterV) = case takeTag "v" inner of
             Just (_, inV, rest) -> (Just $ getContent inV, rest)
             Nothing -> (Nothing, inner)
-          f = case takeTag "v" inner of
+          f = case takeTag "v" afterV of
             Just (_, inF, _) -> Just $ getContent inF
             Nothing -> Nothing
-      return (parseSingleCellRefNoting $ ref, (readMay {-@ Int-}) =<< fmap T.unpack s, t, Nothing, f)
+      return (parseSingleCellRefNoting ref, readMay  =<< fmap T.unpack s, t, v, f)
 
 getContent :: [ES.SAXEvent Text Text] -> Text
 getContent =

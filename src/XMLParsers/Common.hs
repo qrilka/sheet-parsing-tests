@@ -25,6 +25,6 @@ col2int = T.foldl' (\i c -> i * 26 + let2int c) 0
         let2int c = 1 + ord c - ord 'A'
 
 decimal :: (Monad m, Integral a) => Text -> m a
-decimal t = case T.signed T.decimal $ t of
+decimal t = case T.signed T.decimal t of
   Right (d, leftover) | T.null leftover -> return d
   _ -> fail $ "invalid decimal" ++ show t
