@@ -10,6 +10,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Read as T
 import Safe
 
+parseSingleCellRefNoting :: Text -> (Int, Int)
 parseSingleCellRefNoting txt = fromJustNote errMsg $ parseSingleCellRefRaw txt
   where
     errMsg = "Bad cell reference '" ++ T.unpack txt ++ "'"

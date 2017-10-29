@@ -31,13 +31,11 @@ parseCellsExpatT bs = parseCells $ parseThrowing defaultParseOptions bs
       ref <- lookup "r" attrs
       let s = lookup "s" attrs
           t = fromMaybe "n" $ lookup "t" attrs
-          getText :: UNode Text -> Text
-          getText n = T.concat [ t | Text t <- eChildren n ]
           (v, afterV) = case eChildren c of
             (e:rest) | eName e == "v" -> (Just $ getText e, rest)
             other -> (Nothing, other)
           f = case afterV of
-            (e:rest) | eName e == "v" -> Just (getText e)
+            (e:_rest) | eName e == "v" -> Just (getText e)
             _ -> Nothing
-      return (parseSingleCellRefNoting ref, readMay =<< fmap T.unpack s, t, Nothing, f)
+      return (parseSingleCellRefNoting ref, readMay =<< fmap T.unpack s, t, v, f)
 
