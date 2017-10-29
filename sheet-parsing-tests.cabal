@@ -22,6 +22,7 @@ library
                , hexml
                , safe
                , text
+               , xeno >= 0.2
                , xml-conduit
   exposed-modules: XMLParsers
   other-modules: XMLParsers.Common
@@ -29,6 +30,7 @@ library
                  XMLParsers.Hexpat.SAX
                  XMLParsers.Hexpat.Tree
                  XMLParsers.Types
+                 XMLParsers.Xeno
                  XMLParsers.XmlConduit.Common
                  XMLParsers.XmlConduit.Cursor
                  XMLParsers.XmlConduit.Stream
@@ -45,7 +47,7 @@ benchmark bench
                , sheet-parsing-tests
   default-language: Haskell2010
 
-test-suite weigh
+benchmark weigh
   type: exitcode-stdio-1.0
   ghc-options: -Wall
   hs-source-dirs: weigh
